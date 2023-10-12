@@ -1,0 +1,42 @@
+import { Box, useMediaQuery } from '@mui/material'
+import { useSelector } from 'react-redux';
+import Navbar from 'scenes/navbar'
+import UserWidget from 'scenes/widgets/UserWidget';
+import MyPostWidget from 'scenes/widgets/MyPostWidget';
+import PostsWidgets from 'scenes/widgets/PostsWidgets';
+import AdvertWidget from 'scenes/widgets/AdvertWidget';
+import FriendListWidget from 'scenes/widgets/FriendListWidget';
+
+const HomePage = () => {
+  const isNonMoblieScreen = useMediaQuery("(min-width:1000px)");
+  const { _id, picturePath } = useSelector((state) => state.user);
+  return (
+    <Box>
+
+      <Navbar />
+      <Box
+        width="100%"
+        padding="2rem 6%"
+        display={isNonMoblieScreen ? "flex" : "block"}
+        gap="0.5rem"
+        justifyContent="space-between"
+      >
+        <Box flexBasis={isNonMoblieScreen ? "26%" : undefined}>
+          <UserWidget userId={_id} picturePath={picturePath} />
+        </Box>
+        <Box flexBasis={isNonMoblieScreen ? "42%" : undefined}
+          mt={isNonMoblieScreen ? undefined : "2rem"}>
+          <MyPostWidget picturePath={picturePath} />
+          <PostsWidgets userId={_id} />
+        </Box>
+        {isNonMoblieScreen && (<Box flexBasis="26%">
+          <AdvertWidget />
+          <Box m="2rem 0" />
+          <FriendListWidget userId={_id} />
+        </Box>)}
+      </Box>
+    </Box>
+  )
+}
+
+export default HomePage
